@@ -4,7 +4,8 @@ import com.example.universidadeESN3.entity.Aluno;
 import com.example.universidadeESN3.repository.AlunoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,5 +57,9 @@ public class AlunoService implements IAlunoService {
     public List<Aluno> buscarPorNome(String nome) {
 //        return alunoRepository.findByNome(nome);
         return alunoRepository.findByNomeStartingWithIgnoreCase(nome);
+    }
+
+    public Page<Aluno> listarPaginado(Pageable pageable) {
+        return alunoRepository.findAll(pageable);
     }
 }
