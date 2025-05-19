@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,9 +40,16 @@ public class AlunoService implements IAlunoService {
     }
 
     @Override
-    public void atualizar(Aluno aluno) {
+    public ResponseEntity<?> atualizar(Aluno aluno) {
         log.info("atualizar() - aluno:{}", aluno );
-        alunoRepository.save(aluno);
+        Aluno original = buscarPorId(aluno.getId());
+        if (original == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        original.setNome(aluno.getNome());
+        alunoRepository.save(original);
+        return ResponseEntity.ok(null);
     }
 
     @Override

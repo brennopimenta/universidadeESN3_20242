@@ -63,13 +63,7 @@ public class AlunoController {
 
     @PutMapping()
     public ResponseEntity<?> update(@RequestBody Aluno aluno){
-
-        Aluno response = alunoService.buscarPorId(aluno.getId());
-        if (response == null) {
-            return ResponseEntity.notFound().build();
-        }
-        alunoService.atualizar(aluno);
-        return ResponseEntity.ok(null);
+        return alunoService.atualizar(aluno);
     }
 
     @DeleteMapping("/{id}")
