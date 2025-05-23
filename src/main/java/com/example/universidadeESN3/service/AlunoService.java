@@ -1,6 +1,7 @@
 package com.example.universidadeESN3.service;
 
 import com.example.universidadeESN3.entity.Aluno;
+import com.example.universidadeESN3.exception.AlunoNotFoundException;
 import com.example.universidadeESN3.repository.AlunoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,13 @@ public class AlunoService implements IAlunoService {
 
     @Override
     public Aluno buscarPorId(Long id) {
-        Optional<Aluno> response = alunoRepository.findById(id);
-        if (response.isPresent()) {
-            return response.get();
+        try {
+            return alunoRepository.findById(id)
+                    .orElseThrow(() -> new AlunoNotFoundException(id));
+        } catch (Exception e) {
+            log.error("salvar() - ERRO Inesperado :{}", e.getMessage(), e );
+            throw new RuntimeException("Erro ao buscar o aluno por ID", e);
         }
-        return null;
     }
 
     @Override

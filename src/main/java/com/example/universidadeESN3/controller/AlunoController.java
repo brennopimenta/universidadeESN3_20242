@@ -30,12 +30,8 @@ public class AlunoController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Aluno> buscarPorId(@PathVariable Long id){
-
-        Aluno response = alunoService.buscarPorId(id);
-        if (response != null) {
-            return ResponseEntity.ok(response);
-        }
-        return ResponseEntity.notFound().build();
+        Aluno aluno = alunoService.buscarPorId(id);
+        return ResponseEntity.ok(aluno);
     }
 
     @GetMapping(path = "/nome/{nome}")
