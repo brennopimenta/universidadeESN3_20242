@@ -73,4 +73,9 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
+
+    @ExceptionHandler(AlunoAlreadyExistsException.class)
+    public ResponseEntity<String> handleAlunoAlreadyExistsException(AlunoAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }

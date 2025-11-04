@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
@@ -24,5 +26,8 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     @Query("SELECT a FROM Aluno a WHERE a.active = true")
     Page<Aluno> findAlunosAtivos(Pageable pageable);
+
+    @Query("SELECT a FROM Aluno a WHERE a.matricula = :matricula")
+    Optional<Aluno> findByMatricula(@Param("matricula") Long matricula);
 
 }

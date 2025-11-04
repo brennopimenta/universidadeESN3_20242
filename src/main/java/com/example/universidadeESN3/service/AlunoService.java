@@ -1,6 +1,7 @@
 package com.example.universidadeESN3.service;
 
 import com.example.universidadeESN3.entity.Aluno;
+import com.example.universidadeESN3.exception.AlunoAlreadyExistsException;
 import com.example.universidadeESN3.exception.AlunoNotFoundException;
 import com.example.universidadeESN3.repository.AlunoRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,13 @@ public class AlunoService implements IAlunoService {
     @Override
     public Aluno salvar(Aluno aluno) {
         log.info("salvar() - aluno:{}", aluno );
-        return alunoRepository.save(aluno);
+        Optional<Aluno> response = alunoRepository.findByMatricula(aluno.getMatricula());
+        if (response.isEmpty()){
+            aluno.setActive(true);
+            return alunoRepository.save(aluno);
+        }
+
+        throw new AlunoAlreadyExistsException(aluno.getMatricula());
     }
 
     @Override
