@@ -1,5 +1,7 @@
 package com.example.universidadeESN3.service;
 
+import com.example.universidadeESN3.dto.AlunoCreateDTO;
+import com.example.universidadeESN3.dto.AlunoResponseDTO;
 import com.example.universidadeESN3.entity.Aluno;
 import org.springframework.http.ResponseEntity;
 
@@ -9,9 +11,11 @@ public interface IAlunoService {
 
     Aluno buscarPorId(Long id);
 
+    AlunoResponseDTO buscaAlunoReponseDTO(Long id);
+
     List<Aluno> buscarTodos();
 
-    Aluno salvar(Aluno aluno);
+    AlunoResponseDTO salvar(AlunoCreateDTO aluno);
 
     ResponseEntity<?> atualizar(Aluno aluno);
 

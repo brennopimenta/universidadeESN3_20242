@@ -1,5 +1,7 @@
 package com.example.universidadeESN3.controller;
 
+import com.example.universidadeESN3.dto.AlunoCreateDTO;
+import com.example.universidadeESN3.dto.AlunoResponseDTO;
 import com.example.universidadeESN3.entity.Aluno;
 import com.example.universidadeESN3.service.AlunoService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +31,9 @@ public class AlunoController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Aluno> buscarPorId(@PathVariable Long id){
-        Aluno aluno = alunoService.buscarPorId(id);
-        return ResponseEntity.ok(aluno);
+    public ResponseEntity<AlunoResponseDTO> buscarPorId(@PathVariable Long id){
+        AlunoResponseDTO alunoDTO = alunoService.buscaAlunoReponseDTO(id);
+        return ResponseEntity.ok(alunoDTO);
     }
 
     @GetMapping(path = "/nome/{nome}")
@@ -52,7 +54,7 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity<Aluno> salvarAluno(@RequestBody Aluno aluno){
+    public ResponseEntity<AlunoResponseDTO> salvarAluno(@RequestBody AlunoCreateDTO aluno){
         log.info("salvarAluno() - aluno:{}", aluno );
         return ResponseEntity.ok(alunoService.salvar(aluno));
     }

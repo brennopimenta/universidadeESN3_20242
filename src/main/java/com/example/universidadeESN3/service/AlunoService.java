@@ -1,5 +1,7 @@
 package com.example.universidadeESN3.service;
 
+import com.example.universidadeESN3.dto.AlunoCreateDTO;
+import com.example.universidadeESN3.dto.AlunoResponseDTO;
 import com.example.universidadeESN3.entity.Aluno;
 import com.example.universidadeESN3.exception.AlunoAlreadyExistsException;
 import com.example.universidadeESN3.exception.AlunoNotFoundException;
@@ -26,10 +28,25 @@ public class AlunoService implements IAlunoService {
         try {
             return alunoRepository.findById(id)
                     .orElseThrow(() -> new AlunoNotFoundException(id));
+
         } catch (Exception e) {
             log.error("salvar() - ERRO Inesperado :{}", e.getMessage(), e );
             throw new RuntimeException("Erro ao buscar o aluno por ID", e);
         }
+    }
+
+    @Override
+    public AlunoResponseDTO buscaAlunoReponseDTO(Long id) {
+        Aluno aluno = buscarPorId(id);
+        return mapToResponseDTO(aluno);
+    }
+
+    private AlunoResponseDTO mapToResponseDTO(Aluno aluno) {
+        AlunoResponseDTO dto = new AlunoResponseDTO();
+        dto.setId(aluno.getId());
+        dto.setMatricula(aluno.getMatricula());
+        dto.setNome(aluno.getNome());
+        return dto;
     }
 
     @Override
@@ -38,15 +55,21 @@ public class AlunoService implements IAlunoService {
     }
 
     @Override
-    public Aluno salvar(Aluno aluno) {
-        log.info("salvar() - aluno:{}", aluno );
-        Optional<Aluno> response = alunoRepository.findByMatricula(aluno.getMatricula());
+    public AlunoResponseDTO salvar(AlunoCreateDTO alunoDTO) {
+        log.info("salvar() - aluno:{}", alunoDTO );
+        Optional<Aluno> response = alunoRepository.findByMatricula(alunoDTO.getMatricula());
         if (response.isEmpty()){
-            aluno.setActive(true);
-            return alunoRepository.save(aluno);
+            Aluno aluno = Aluno.builder()
+                    .matricula(alunoDTO.getMatricula())
+                    .nome(alunoDTO.getNome())
+                    .genero(alunoDTO.getGenero())
+                    .active(true)
+                    .build();
+
+            return mapToResponseDTO(alunoRepository.save(aluno));
         }
 
-        throw new AlunoAlreadyExistsException(aluno.getMatricula());
+        throw new AlunoAlreadyExistsException(alunoDTO.getMatricula());
     }
 
     @Override
