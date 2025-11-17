@@ -4,6 +4,7 @@ import com.example.universidadeESN3.dto.AlunoCreateDTO;
 import com.example.universidadeESN3.dto.AlunoResponseDTO;
 import com.example.universidadeESN3.entity.Aluno;
 import com.example.universidadeESN3.service.AlunoService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,7 +55,7 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity<AlunoResponseDTO> salvarAluno(@RequestBody AlunoCreateDTO aluno){
+    public ResponseEntity<AlunoResponseDTO> salvarAluno(@Valid @RequestBody AlunoCreateDTO aluno){
         log.info("salvarAluno() - aluno:{}", aluno );
         return ResponseEntity.ok(alunoService.salvar(aluno));
     }
