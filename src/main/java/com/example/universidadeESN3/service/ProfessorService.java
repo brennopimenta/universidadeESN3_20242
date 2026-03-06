@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -17,17 +18,21 @@ public class ProfessorService implements IProfessorService {
 
     @Override
     public Professor buscarPorId(Long id) {
-        return null;
+        Optional<Professor> professorOpt = professorRepository.findById(id);
+        if (professorOpt.isEmpty()){
+            return null;
+        }
+        return professorOpt.get();
     }
 
     @Override
     public List<Professor> buscarTodos() {
-        return null;
+        return professorRepository.findAll();
     }
 
     @Override
     public Professor salvar(Professor professor) {
-        return null;
+        return professorRepository.save(professor);
     }
 
     @Override
