@@ -1,9 +1,12 @@
 package com.example.universidadeESN3.service;
 
+import com.example.universidadeESN3.dto.ProfessorDTO;
+import com.example.universidadeESN3.dto.ProfessorRequestDTO;
 import com.example.universidadeESN3.entity.Professor;
 import com.example.universidadeESN3.repository.ProfessorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,21 +30,38 @@ public class ProfessorService implements IProfessorService {
 
     @Override
     public List<Professor> buscarTodos() {
-        return professorRepository.findAll();
+        return professorRepository.findByActiveTrue();
     }
 
     @Override
-    public Professor salvar(Professor professor) {
+    public Professor salvar(ProfessorRequestDTO professorRequestDTO) {
+        Professor professor = new Professor();
+        professor.setNome(professorRequestDTO.getNome());
+        professor.setMatricula(professorRequestDTO.getMatricula());
+        professor.setActive(Boolean.TRUE);
         return professorRepository.save(professor);
     }
 
     @Override
-    public void atualizar(Professor professor) {
+    public ResponseEntity<?> atualizar(Long id, ProfessorDTO professorDTO) {
+        Professor professor = professorRepository.getReferenceById(id);
+        if (professor == null){
+            return ResponseEntity.badRequest().build();
+        }
+        professor.setNome(professorDTO.getNome());
+        professorRepository.save(professor);
+        return ResponseEntity.ok(null);
 
     }
 
     @Override
-    public void excluir(Long id) {
-
+    public ResponseEntity<?> excluir(Long id) {
+        Professor professor = professorRepository.getReferenceById(id);
+        if (professor == null) {
+            return ResponseEntity.notFound().build();
+        }
+        professor.setActive(Boolean.FALSE);
+        professorRepository.save(professor);
+        return ResponseEntity.ok(null);
     }
 }
