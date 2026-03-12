@@ -15,4 +15,5 @@ public class Professor {
     private Long id;
     private Long matricula;
     private String nome;
+    private Boolean active;
 }

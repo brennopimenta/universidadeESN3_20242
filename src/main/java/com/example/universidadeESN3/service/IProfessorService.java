@@ -1,7 +1,10 @@
 package com.example.universidadeESN3.service;
 
+import com.example.universidadeESN3.dto.ProfessorDTO;
+import com.example.universidadeESN3.dto.ProfessorRequestDTO;
 import com.example.universidadeESN3.entity.Aluno;
 import com.example.universidadeESN3.entity.Professor;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -11,9 +14,9 @@ public interface IProfessorService {
 
     List<Professor> buscarTodos();
 
-    Professor salvar(Professor professor);
+    Professor salvar(ProfessorRequestDTO professor);
 
-    void atualizar(Professor professor);
+    ResponseEntity<?> atualizar(Long id, ProfessorDTO professorDTO);
 
-    void excluir(Long id);
+    ResponseEntity<?> excluir(Long id);
 }

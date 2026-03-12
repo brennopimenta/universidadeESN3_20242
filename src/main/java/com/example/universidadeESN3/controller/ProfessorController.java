@@ -2,6 +2,8 @@ package com.example.universidadeESN3.controller;
 
 import com.example.universidadeESN3.dto.AlunoCreateDTO;
 import com.example.universidadeESN3.dto.AlunoResponseDTO;
+import com.example.universidadeESN3.dto.ProfessorDTO;
+import com.example.universidadeESN3.dto.ProfessorRequestDTO;
 import com.example.universidadeESN3.entity.Aluno;
 import com.example.universidadeESN3.entity.Professor;
 import com.example.universidadeESN3.service.ProfessorService;
@@ -32,8 +34,17 @@ public class ProfessorController {
     }
 
     @PostMapping
-    public ResponseEntity<Professor> salvarProfessor(@Valid @RequestBody Professor professor){
-//        log.info("salvarAluno() - aluno:{}", aluno );
-        return ResponseEntity.ok(professorService.salvar(professor));
+    public ResponseEntity<Professor> salvarProfessor(@Valid @RequestBody ProfessorRequestDTO professorRequestDTO){
+        return ResponseEntity.ok(professorService.salvar(professorRequestDTO));
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProfessorDTO professorDto){
+         return professorService.atualizar(id, professorDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return professorService.excluir(id);
     }
 }
